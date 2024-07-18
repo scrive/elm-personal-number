@@ -33,7 +33,6 @@ where DDMMYY is the day, month and year of birth.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
-import Maybe.Extra as Maybe
 import Parser exposing ((|.), Parser, chompIf, getChompedString)
 import Util exposing (digit, getSerialPart, stringLength, validateDate, whitespace)
 
@@ -58,9 +57,14 @@ personalNumberParser =
             |. stringLength 6
             |. Parser.oneOf
                 [ chompIf (\c -> c == '-')
-                    -- FIXME: fix only numbers!!
+                    |. digit
+                    |. digit
+                    |. digit
                     |. digit
                 , digit
+                    |. digit
+                    |. digit
+                    |. digit
                 ]
     )
         |> Parser.map PersonalNumber

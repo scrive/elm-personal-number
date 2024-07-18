@@ -21,6 +21,8 @@ suite =
                         |> Expect.equal (Ok "111111-111C")
             , test "should not accept a PNR without the last four digits" <|
                 \_ -> Expect.err (PersonalNumber.fromString "200866001386")
+            , test "should not accept a PNR with alpha characters not in checknum position" <|
+                \_ -> Expect.err (PersonalNumber.fromString "200A66001386")
             , test "should not accept an invalid PNR with the correct format" <|
                 \_ -> Expect.err (PersonalNumber.fromString "  - - -- ")
             , test "should not accept a PNR that is not a valid date" <|

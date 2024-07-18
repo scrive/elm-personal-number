@@ -35,7 +35,6 @@ temporary visitors.
 import Json.Decode
 import Json.Encode
 import Parser exposing ((|.), Parser, getChompedString)
-import Result.Extra as Result
 import String
 import Util exposing (stringLength, whitespace)
 
@@ -91,8 +90,8 @@ personalNumberParser =
         |> Parser.map PNR
 
 
-checkFormat : String -> Result ValidationError String
-checkFormat str =
+validateFormat : String -> Result ValidationError String
+validateFormat str =
     case Parser.run personalNumberParser str of
         Ok pnr ->
             Ok (toString pnr)
@@ -103,45 +102,39 @@ checkFormat str =
 
 verifyChecksum : String -> Result ValidationError String
 verifyChecksum str =
-    case Parser.run personalNumberParser str of
-        Ok pnr ->
-            let
-                checksum =
-                    pnr
-                        |> toString
-                        |> String.split ""
-                        |> List.reverse
-                        |> List.take 10
-                        |> List.reverse
-                        |> List.map String.toInt
-                        |> List.map (Maybe.withDefault -1)
-                        |> List.indexedMap (\a b -> ( a, b ))
-                        |> List.map
-                            (\( i, a ) ->
-                                if modBy 2 i == 0 then
-                                    a * 2
+    let
+        checksum =
+            str
+                |> String.split ""
+                |> List.reverse
+                |> List.take 10
+                |> List.reverse
+                |> List.map String.toInt
+                |> List.map (Maybe.withDefault -1)
+                |> List.indexedMap (\a b -> ( a, b ))
+                |> List.map
+                    (\( i, a ) ->
+                        if modBy 2 i == 0 then
+                            a * 2
 
-                                else
-                                    a
-                            )
-                        |> List.map
-                            (\a ->
-                                if a > 9 then
-                                    1 + (a - 10)
+                        else
+                            a
+                    )
+                |> List.map
+                    (\a ->
+                        if a > 9 then
+                            1 + (a - 10)
 
-                                else
-                                    a
-                            )
-                        |> List.foldl (+) 0
-            in
-            if modBy 10 checksum == 0 then
-                Ok str
+                        else
+                            a
+                    )
+                |> List.foldl (+) 0
+    in
+    if modBy 10 checksum == 0 then
+        Ok str
 
-            else
-                Err InvalidChecksum
-
-        Err _ ->
-            Err InvalidChecksum
+    else
+        Err InvalidChecksum
 
 
 numberType : String -> Result ValidationError PersonalNumber
@@ -197,7 +190,7 @@ fromString str =
                 digits =
                     String.right 4 pnr
             in
-            checkFormat (date ++ digits)
+            validateFormat (date ++ digits)
                 |> Result.andThen verifyChecksum
                 |> Result.andThen numberType
 

@@ -36,9 +36,8 @@ import Basics.Extra exposing (flip)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
 import List.Extra as List
-import Maybe.Extra as Maybe
 import Parser exposing ((|.), Parser, chompIf, getChompedString)
-import Util exposing (getSerialPart, stringLength, validateDate, whitespace)
+import Util exposing (char, digit, getSerialPart, validateDate, whitespace)
 
 
 {-| An opaque type representing a valid personal number.
@@ -70,9 +69,18 @@ personalNumberParser =
     (getChompedString <|
         Parser.succeed ()
             |. whitespace
-            |. stringLength 6
+            |. digit
+            |. digit
+            |. digit
+            |. digit
+            |. digit
+            |. digit
             |. chompIf (\c -> c == '-' || c == '+' || c == 'A')
-            |. stringLength 4
+            |. digit
+            |. digit
+            |. digit
+            -- checksum
+            |. char
     )
         |> Parser.map PersonalNumber
 

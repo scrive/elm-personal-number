@@ -39,6 +39,8 @@ suite =
                 \_ -> Expect.err (fromString "19921208")
             , test "should not accept an invalid PNR with the correct format" <|
                 \_ -> Expect.err (fromString "00000000-0000")
+            , test "should not accept a PNR with alpha characters not in checknum position" <|
+                \_ -> Expect.err (PersonalNumber.fromString "1992A208-1286")
             , test "should not accept a PNR that is not a valid date" <|
                 \_ -> Expect.err (fromString "19921308-1285")
             , test "should not accept a PNR with an invalid checksum" <|

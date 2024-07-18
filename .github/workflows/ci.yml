@@ -48,5 +48,8 @@ jobs:
       - name: run make, format, tests (see package.json)
         run: npm test
 
+      - name: elm-review
+        run: npx elm-review --template jfmengels/elm-review-unused/example
+
       - name: build
         run: npm run build

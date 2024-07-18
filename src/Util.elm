@@ -1,4 +1,4 @@
-module Util exposing (digit, getSerialPart, stringLength, validateDate, whitespace)
+module Util exposing (char, digit, getSerialPart, stringLength, validateDate, whitespace)
 
 import List.Extra as List
 import Parser exposing ((|.), Parser, Step(..), chompIf, chompWhile, getChompedString)
@@ -11,7 +11,12 @@ whitespace =
 
 digit : Parser ()
 digit =
-    chompWhile Char.isDigit
+    chompIf Char.isDigit
+
+
+char : Parser ()
+char =
+    chompIf Char.isAlphaNum
 
 
 stringLength : Int -> Parser String

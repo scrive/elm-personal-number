@@ -21,9 +21,8 @@ suite =
                         |> Expect.equal (Ok "160688-4523")
             , test "should not accept a PNR with less than 10 digits" <|
                 \_ -> Expect.err (PersonalNumber.fromString "160688")
-            , skip <|
-                test "should not accept an invalid PNR with other characters than digits" <|
-                    \_ -> Expect.err (PersonalNumber.fromString "160688-45MM")
+            , test "should not accept an invalid PNR with other characters than digits" <|
+                \_ -> Expect.err (PersonalNumber.fromString "160688-45MM")
             , test "should not accept a PNR that is not a valid date" <|
                 \_ -> Expect.err (PersonalNumber.fromString "3206884523")
             , test "should not accept an empty value" <|
