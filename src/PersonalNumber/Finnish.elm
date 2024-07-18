@@ -123,7 +123,7 @@ validateChecksum str =
         Err InvalidChecksum
 
 
-{-| Males have odd and females have even individual number
+{-| Males have an odd serial number
 -}
 isMale : PersonalNumber -> Bool
 isMale (PersonalNumber str) =
@@ -138,6 +138,8 @@ isMale (PersonalNumber str) =
     modBy 2 serialPart == 1
 
 
+{-| Females have an even serial number
+-}
 isFemale : PersonalNumber -> Bool
 isFemale =
     not << isMale
