@@ -10,49 +10,49 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
       - name: Read .nvmrc
         run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ env.NVMRC }}
-          cache: yarn
+          cache: npm
 
-      # Re-use node_modules between runs until package.json or yarn.lock changes.
+      # Re-use node_modules between runs until package.json or package-lock.json changes.
       - name: Cache node_modules
         id: cache-node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.2
         with:
           path: node_modules
-          key: node_modules-${{ hashFiles('package.json', 'yarn.lock') }}
+          key: node_modules-${{ hashFiles('package.json', 'package-lock.json') }}
 
       # Re-use ~/.elm between runs until elm.json, elm-tooling.json or
       # review/elm.json changes. The Elm compiler saves downloaded Elm packages
       # to ~/.elm, and elm-tooling saves downloaded tool executables there.
       - name: Cache ~/.elm
-        uses: actions/cache@v2
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.elm
           key: elm-${{ hashFiles('elm.json', 'elm-tooling.json', 'review/elm.json') }}
 
       # Install tools from elm-tooling.json, unless we restored them from
-      # cache. yarn.lock and elm-tooling.json can change independently,
+      # cache. package-lock.json and elm-tooling.json can change independently,
       # so we need to install separately based on what was restored from cache.
       # This is run even if we restored ~/.elm from cache to be 100% sure
       # node_modules/.bin/ contains links to all your tools. `elm-tooling
       # install` runs very fast when there’s nothing new to download so
       # skipping the step doesn’t save much time.
-      - name: yarn ci install
-        run: yarn install --immutable --immutable-cache --check-cache
+      - name: npm ci install
+        run: npm ci
 
       - name: elm make
         run: npx --no-install elm make src/Main.elm --output=/dev/null
 
       - name: elm-test
-        run: yarn test
+        run: npm test
 
       - name: elm-review
-        run: yarn review
+        run: npm run review
 
       - name: elm-format
         run: npx --no-install elm-format --validate src tests
