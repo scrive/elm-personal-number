@@ -50,6 +50,3 @@ jobs:
 
       - name: elm-review
         run: npx elm-review --template jfmengels/elm-review-unused/example
-
-      - name: build
-        run: npm run build

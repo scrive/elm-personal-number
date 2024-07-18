@@ -109,9 +109,8 @@ verifyChecksum str =
                 |> List.reverse
                 |> List.take 10
                 |> List.reverse
-                |> List.map String.toInt
-                |> List.map (Maybe.withDefault -1)
-                |> List.indexedMap (\a b -> ( a, b ))
+                |> List.map (String.toInt >> Maybe.withDefault -1)
+                |> List.indexedMap Tuple.pair
                 |> List.map
                     (\( i, a ) ->
                         if modBy 2 i == 0 then
