@@ -46,7 +46,7 @@ jobs:
         run: npm ci
 
       - name: elm make
-        run: npx --no-install elm make src/Main.elm --output=/dev/null
+        run: npx --no-install elm make src/**/*.elm --output=/dev/null
 
       - name: elm-test
         run: npm test
