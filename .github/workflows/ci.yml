@@ -45,17 +45,8 @@ jobs:
       - name: npm ci install
         run: npm ci
 
-      - name: elm make
-        run: npx --no-install elm make src/**/*.elm --output=/dev/null
-
-      - name: elm-test
+      - name: run make, format, tests (see package.json)
         run: npm test
-
-      - name: elm-review
-        run: npm run review
-
-      - name: elm-format
-        run: npx --no-install elm-format --validate src tests
 
       - name: build
         run: npm run build

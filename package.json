@@ -5,7 +5,7 @@
   "scripts": {
     "test": "npm-run-all --print-name --silent --sequential test:make test:format test:run",
     "test:make": "elm make",
-    "test:format": "elm-format --validate",
+    "test:format": "elm-format --validate src tests",
     "test:run": "elm-test-rs",
     "postinstall": "elm-tooling install"
   },
