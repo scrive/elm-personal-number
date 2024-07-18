@@ -1,0 +1,26 @@
+{
+    "type": "package",
+    "name": "scrive/elm-personal-number",
+    "summary": "A library for validating personal numbers",
+    "license": "MIT",
+    "version": "1.0.0",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "PersonalNumber.Danish",
+        "PersonalNumber.Finnish",
+        "PersonalNumber.Norwegian",
+        "PersonalNumber.Swedish"
+    ],
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    "dependencies": {
+        "elm/core": "1.0.2 <= v < 2.0.0",
+        "elm/json": "1.1.2 <= v < 2.0.0",
+        "elm/parser": "1.1.0 <= v < 2.0.0",
+        "elmcraft/core-extra": "2.0.0 <= v < 3.0.0"
+    },
+    "test-dependencies": {
+        "elm-explorations/test": "2.0.0 <= v < 3.0.0"
+    }
+}
