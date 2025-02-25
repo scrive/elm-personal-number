@@ -32,6 +32,21 @@ suite =
                     PersonalNumber.fromString "010200A9618"
                         |> Result.map PersonalNumber.display
                         |> Expect.equal (Ok "010200A9618")
+            , test "should accept a PNR with a different century marker for those born in or after 2000" <|
+                \_ ->
+                    PersonalNumber.fromString "010200F9618"
+                        |> Result.map PersonalNumber.display
+                        |> Expect.equal (Ok "010200F9618")
+            , test "should accept a PNR with a different century marker for those born in the 1900s" <|
+                \_ ->
+                    PersonalNumber.fromString "010200X9618"
+                        |> Result.map PersonalNumber.display
+                        |> Expect.equal (Ok "010200X9618")
+            , test "should accept a PNR with a different century marker for those born in the 19th century" <|
+                \_ ->
+                    PersonalNumber.fromString "010200+9618"
+                        |> Result.map PersonalNumber.display
+                        |> Expect.equal (Ok "010200+9618")
             , test "should not accept a PNR with an invalid checksum" <|
                 \_ -> Expect.err (PersonalNumber.fromString "131052308X")
             , test "should not accept an empty value" <|
