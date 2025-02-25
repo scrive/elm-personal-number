@@ -64,6 +64,18 @@ checksumChars =
     "0123456789ABCDEFHJKLMNPRSTUVWXY"
 
 
+{-| Separators used in personal identity codes:
+
+  - for those born in or after 2000, letters A, B, C, D, E, F.
+  - for those born in the 1900s, the current hyphen (-) or the letters Y, X, W, V, U.
+  - for those born in the 19th century, a plus sign (+).
+
+-}
+separatorChars : String
+separatorChars =
+    "-+ABCDEFYXWVU"
+
+
 personalNumberParser : Parser PersonalNumber
 personalNumberParser =
     (getChompedString <|
@@ -75,7 +87,7 @@ personalNumberParser =
             |. digit
             |. digit
             |. digit
-            |. chompIf (\c -> c == '-' || c == '+' || c == 'A')
+            |. chompIf (String.fromChar >> flip String.contains separatorChars)
             |. digit
             |. digit
             |. digit
