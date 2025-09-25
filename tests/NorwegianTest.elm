@@ -29,6 +29,11 @@ suite =
                     fromString "  19118438739  "
                         |> Result.map PersonalNumber.toString
                         |> Expect.equal (Ok "19118438739")
+            , test "should accept a PNR with dashes" <|
+                \_ ->
+                    fromString "191184-387-39"
+                        |> Result.map PersonalNumber.toString
+                        |> Expect.equal (Ok "19118438739")
             , test "should not accept a PNR without the last four digits" <|
                 \_ -> Expect.err (fromString "200866001386")
             , test "should not accept a PNR with alpha characters not in checknum position" <|
