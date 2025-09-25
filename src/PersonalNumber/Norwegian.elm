@@ -147,7 +147,7 @@ fromString : String -> Result ValidationError PersonalNumber
 fromString str =
     let
         pnr =
-            String.trim str
+            String.filter (\c -> List.notMember c [ '-', ' ' ]) <| String.trim str
     in
     case String.length pnr of
         11 ->
