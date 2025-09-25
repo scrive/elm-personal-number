@@ -28,7 +28,7 @@
           test = pkgs.stdenv.mkDerivation {
             pname = "elm-personal-number-test";
             version = "1.0.0";
-            
+            # point to elm.json
             src = ./.;
             
             nativeBuildInputs = with pkgs.elmPackages; [
@@ -46,8 +46,6 @@
               mkdir -p $out
               echo "Tests completed successfully" > $out/test-results
             '';
-            
-            # Don't create separate debug info
             dontStrip = true;
           };
         };
