@@ -8,6 +8,7 @@
         "src"
     ],
     "exposed-modules": [
+        "CompanyNumber.Danish",
         "PersonalNumber.Danish",
         "PersonalNumber.Finnish",
         "PersonalNumber.Norwegian",
