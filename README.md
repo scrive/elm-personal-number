@@ -11,6 +11,7 @@ A library for validating personal numbers. Built from the ground up using parser
 - Norwegian personal numbers (fødselsnummer).
 - Finnish personal numbers (henkilötunnus).
 - Danish personal numbers (personnummer).
+- Danish company numbers (CVR-nummer).
 
 ## Example usage
 
