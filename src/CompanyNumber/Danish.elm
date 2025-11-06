@@ -35,7 +35,6 @@ Exact CVR format specification: <https://hl7.dk/fhir/core/2.2.0/StructureDefinit
 import Json.Decode as Decode
 import Json.Encode as Encode
 import List.Extra as List
-import Parser exposing ((|.), Parser, getChompedString)
 
 
 {-| An opaque type representing a valid personal number.
@@ -52,34 +51,14 @@ type ValidationError
     | InvalidChecksum
 
 
-companyNumberParser : Parser CompanyNumber
-companyNumberParser =
-    (getChompedString <|
-        Parser.succeed ()
-            |. Parser.chompWhile (\c -> Char.isDigit c)
-    )
-        |> Parser.map CompanyNumber
-
-
-validateFormat : String -> Result ValidationError String
-validateFormat str =
-    case Parser.run companyNumberParser str of
-        Ok pnr ->
-            Ok (toString pnr)
-
-        Err _ ->
-            Err InvalidFormat
-
-
 validateChecksum : String -> Result ValidationError String
 validateChecksum str =
     let
         checksum =
             String.split "" str
-                |> List.map (String.toInt >> Maybe.withDefault -1)
-                |> List.zip [ 2, 7, 6, 5, 4, 3, 2, 1 ]
-                |> List.map (\( a, b ) -> a * b)
-                |> List.foldl (+) 0
+                |> List.filterMap String.toInt
+                |> List.map2 (*) [ 2, 7, 6, 5, 4, 3, 2, 1 ]
+                |> List.sum
                 |> modBy 11
     in
     if checksum == 0 then
@@ -94,18 +73,20 @@ validateChecksum str =
 fromString : String -> Result ValidationError CompanyNumber
 fromString str =
     let
-        pnr : String
-        pnr =
+        filteredString : String
+        filteredString =
             String.filter (\c -> List.notMember c [ '-', ' ' ]) <| String.trim str
     in
-    case String.length pnr of
-        8 ->
-            validateFormat pnr
-                |> Result.andThen validateChecksum
+    if String.length filteredString == 8 then
+        if String.all Char.isDigit filteredString then
+            validateChecksum filteredString
                 |> Result.map CompanyNumber
 
-        _ ->
-            Err InvalidLength
+        else
+            Err InvalidFormat
+
+    else
+        Err InvalidLength
 
 
 {-| Converts a company number to string representation in the long format that is
