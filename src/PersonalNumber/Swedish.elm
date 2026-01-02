@@ -47,6 +47,12 @@ type PersonalNumber
 
 
 {-| Check if the personal number is a "personnummer".
+
+    import Result.Extra as Result
+
+    fromString "19921208-1286"
+        |> Result.unwrap False isPNR --> True
+
 -}
 isPNR : PersonalNumber -> Bool
 isPNR pnr =
@@ -59,6 +65,11 @@ isPNR pnr =
 
 
 {-| Check if the personal number is a "sammordningsnummer".
+
+    import Result.Extra as Result
+
+    fromString "701063-1237"
+        |> Result.unwrap False isSAM --> True
 -}
 isSAM : PersonalNumber -> Bool
 isSAM pnr =
@@ -233,6 +244,12 @@ decoder =
 
 
 {-| Format a personal number into a user readable string (YYYYMMDD-XXXX).
+
+    import Result.Extra as Result
+
+    fromString "199212081286"
+        |> Result.map display
+        --> Ok "19921208-1286"
 -}
 display : PersonalNumber -> String
 display pnr =
