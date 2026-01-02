@@ -35,7 +35,6 @@ temporary visitors.
 import Json.Decode
 import Json.Encode
 import Parser exposing ((|.), Parser, getChompedString)
-import String
 import Util exposing (stringLength, whitespace)
 
 
@@ -244,8 +243,6 @@ decoder =
 
 
 {-| Format a personal number into a user readable string (YYYYMMDD-XXXX).
-
-    import Result.Extra as Result
 
     fromString "199212081286"
         |> Result.map display

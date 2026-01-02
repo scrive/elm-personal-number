@@ -7,7 +7,8 @@
     "test:make": "elm make",
     "test:run": "elm-test-rs",
     "test:docs": "elm-verify-examples --run-tests",
-    "postinstall": "elm-tooling install"
+    "postinstall": "elm-tooling install",
+    "review": "npx elm-review --template jfmengels/elm-review-unused/example"
   },
   "devDependencies": {
     "elm-tooling": "^1.15.1",
