@@ -49,4 +49,4 @@ jobs:
         run: npm test
 
       - name: elm-review
-        run: npx elm-review --template jfmengels/elm-review-unused/example
+        run: npm run review
